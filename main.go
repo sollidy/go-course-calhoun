@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"main/controllers"
+	"main/templates"
 	"main/views"
 	"net/http"
-	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -13,10 +13,10 @@ import (
 func main() {
 	r := chi.NewRouter()
 
-	t := views.Must(views.Parse(filepath.Join("templates", "home.gohtml")))
+	t := views.Must(views.ParseFs(templates.FS, "home.gohtml"))
 	r.Get("/", controllers.StaticHandler(t))
 
-	t = views.Must(views.Parse(filepath.Join("templates", "contact.gohtml")))
+	t = views.Must(views.ParseFs(templates.FS, "contact.gohtml"))
 	r.Get("/contact", controllers.StaticHandler(t))
 
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
