@@ -2,27 +2,22 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"log"
+	"main/views"
 	"net/http"
 	"path/filepath"
 
 	"github.com/go-chi/chi/v5"
 )
 
-func executeTemplate(w http.ResponseWriter, pathTemplate string) {
-	tpl, err := template.ParseFiles(pathTemplate)
+func executeTemplate(w http.ResponseWriter, filePath string) {
+	t, err := views.Parse(filePath)
 	if err != nil {
 		log.Printf("parsing template: %v", err)
 		http.Error(w, "Error when parsing template", http.StatusInternalServerError)
 		return
 	}
-	err = tpl.Execute(w, nil)
-	if err != nil {
-		log.Printf("executing template: %v", err)
-		http.Error(w, "Error when executing template", http.StatusInternalServerError)
-		return
-	}
+	t.Execute(w, nil)
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
