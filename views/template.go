@@ -7,6 +7,13 @@ import (
 	"text/template"
 )
 
+func Must(t Template, err error) Template {
+	if err != nil {
+		panic(err)
+	}
+	return t
+}
+
 func Parse(filePath string) (Template, error) {
 	tpl, err := template.ParseFiles(filePath)
 	if err != nil {
